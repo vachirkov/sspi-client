@@ -248,7 +248,7 @@ SECURITY_STATUS SspiImpl::GetNextBlob(
         &m_credHandle,      // Credential handle.
         SecIsValidHandle(&m_ctxtHandle) ? &m_ctxtHandle : nullptr,      // Context handle - input.
         const_cast<WCHAR*>(m_spnMultiByte.get()),    // Service Principal name (SPN).
-        ISC_REQ_DELEGATE | ISC_REQ_MUTUAL_AUTH | ISC_REQ_INTEGRITY | ISC_REQ_EXTENDED_ERROR,
+        ISC_REQ_DELEGATE | ISC_REQ_MUTUAL_AUTH | ISC_REQ_EXTENDED_ERROR, // | ISC_REQ_INTEGRITY
                     // Context bit flags.
         0,          // Reserved - unused.
         SECURITY_NATIVE_DREP,       // Target data representation.
