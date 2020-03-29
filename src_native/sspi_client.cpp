@@ -294,7 +294,7 @@ private:
         char* inBlob = nullptr;
         if (inBlobLength > 0)
         {
-            inBlob = node::Buffer::Data(info[0]->ToObject(context));
+            inBlob = node::Buffer::Data(info[0]->ToObject(context).ToLocalChecked());
         }
 
         Nan::Callback* callback = new Nan::Callback(info[3].As<v8::Function>());
