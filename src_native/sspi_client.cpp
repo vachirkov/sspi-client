@@ -207,8 +207,9 @@ NAN_METHOD(InitializeAsync)
 
 NAN_METHOD(EnableDebugLogging)
 {
+    v8::Isolate* isolate = v8::Isolate::GetCurrent();
     DebugLog("%ul: Main event loop: EnableDebugLogging NAN_METHOD.\n", GetCurrentThreadId());
-    SetDebugLogging(info[0]->BooleanValue());
+    SetDebugLogging(info[0]->BooleanValue(isolate));
 }
 
 // Native implementation of SspiClient surfaced to JavaScript.
