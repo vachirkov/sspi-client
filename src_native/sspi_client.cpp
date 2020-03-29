@@ -288,8 +288,8 @@ private:
 
         v8::Local<v8::Context> context = v8::Isolate::GetCurrent()->GetCurrentContext();
 
-        int inBlobBeginOffset = static_cast<int>(info[1]->IntegerValue(context));
-        int inBlobLength = static_cast<int>(info[2]->IntegerValue(context));
+        int inBlobBeginOffset = static_cast<int>(info[1]->IntegerValue(context).FromJust());
+        int inBlobLength = static_cast<int>(info[2]->IntegerValue(context).FromJust());
 
         char* inBlob = nullptr;
         if (inBlobLength > 0)
