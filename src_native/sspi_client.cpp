@@ -286,7 +286,7 @@ private:
     {
         DebugLog("%ul: Main event loop: SspiClientObject::GetNextBlob.\n", GetCurrentThreadId());
 
-        v8::Locale<v8:Context> context = v8::Isolate::GetCurrent()->GetCurrentContext();
+        v8::Local<v8:Context> context = v8::Isolate::GetCurrent()->GetCurrentContext();
 
         int inBlobBeginOffset = static_cast<int>(info[1]->IntegerValue(context));
         int inBlobLength = static_cast<int>(info[2]->IntegerValue(context));
