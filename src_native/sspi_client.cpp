@@ -207,9 +207,8 @@ NAN_METHOD(InitializeAsync)
 
 NAN_METHOD(EnableDebugLogging)
 {
-    v8::Isolate* isolate = v8::Isolate::GetCurrent();
     DebugLog("%ul: Main event loop: EnableDebugLogging NAN_METHOD.\n", GetCurrentThreadId());
-    SetDebugLogging(info[0]->BooleanValue(isolate));
+    SetDebugLogging(info[0]->BooleanValue(v8::Isolate::GetCurrent()));
 }
 
 // Native implementation of SspiClient surfaced to JavaScript.
@@ -287,13 +286,15 @@ private:
     {
         DebugLog("%ul: Main event loop: SspiClientObject::GetNextBlob.\n", GetCurrentThreadId());
 
-        int inBlobBeginOffset = static_cast<int>(info[1]->IntegerValue());
-        int inBlobLength = static_cast<int>(info[2]->IntegerValue());
+        v8::Locale<v8:Context> context = v8::Isolate::GetCurrent()->GetCurrentContext();
+
+        int inBlobBeginOffset = static_cast<int>(info[1]->IntegerValue(context));
+        int inBlobLength = static_cast<int>(info[2]->IntegerValue(context));
 
         char* inBlob = nullptr;
         if (inBlobLength > 0)
         {
-            inBlob = node::Buffer::Data(info[0]->ToObject());
+            inBlob = node::Buffer::Data(info[0]->ToObject(context));
         }
 
         Nan::Callback* callback = new Nan::Callback(info[3].As<v8::Function>());
@@ -310,14 +311,14 @@ private:
     {
         DebugLog("%ul: Main event loop: SspiClientObject::UtEnableCannedResponse.\n", GetCurrentThreadId());
         SspiClientObject* sspiClientObject = Nan::ObjectWrap::Unwrap<SspiClientObject>(info.Holder());
-        sspiClientObject->m_sspiImpl->UtEnableCannedResponse(info[0]->BooleanValue());
+        sspiClientObject->m_sspiImpl->UtEnableCannedResponse(info[0]->BooleanValue(v8::Isolate::GetCurrent()));
     }
 
     static NAN_METHOD(UtForceCompleteAuth)
     {
         DebugLog("%ul: Main event loop: SspiClientObject::UtForceCompleteAuth.\n", GetCurrentThreadId());
         SspiClientObject* sspiClientObject = Nan::ObjectWrap::Unwrap<SspiClientObject>(info.Holder());
-        sspiClientObject->m_sspiImpl->UtForceCompleteAuth(info[0]->BooleanValue());
+        sspiClientObject->m_sspiImpl->UtForceCompleteAuth(info[0]->BooleanValue(v8::Isolate::GetCurrent()));
     }
 
     // This is a shared pointer because we pass this to
